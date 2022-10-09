@@ -1,6 +1,9 @@
 const tableBody = document.querySelector("tbody");
 const createForm = document.getElementById('create-form');
 const updateForm = document.getElementById('update-form');
+const modal = new bootstrap.Modal("#firstModal");
+const secondModal = new bootstrap.Modal("#secondModal");
+
 
 function HttpClient(baseUrl) {
     this.baseUrl = baseUrl;
@@ -16,7 +19,7 @@ function HttpClient(baseUrl) {
                     return;
                 }
 
-                resolve({ response: null, error: response.json });
+                resolve({ response: null, error: json });
             } catch (error) {
                 resolve({ response: null, error });
             }
@@ -127,8 +130,8 @@ function createPostRow(userId, id, title, body) {
     <td>${userId}</td>  
     <td>${title}</td>  
     <td>${body}</td>
-    <td><button data-id="${id}" class="btn btn-outline-primary btn-sm edit-Button" data-bs-toggle="modal" data-bs-target="#exampleModalTwo" > <i class="bi bi-pencil"></i> Edit </button></td>  
-    <td><button data-id="${id}" class="btn btn-outline-danger btn-sm  table-Button"><i class="bi bi-trash"></i>Delete </button></td>
+    <td><button data-id="${id}" class="btn btn-outline-primary text-nowrap btn-sm edit-button" data-bs-toggle="modal" data-bs-target="#secondModal" > <i class="bi bi-pencil"></i> Edit</button></td>  
+    <td><button data-id="${id}" class="btn btn-outline-danger text-nowrap  btn-sm  delete-button"><i class="bi bi-trash"></i>Delete</button></td>
     
     </tr>`;
 
@@ -164,7 +167,7 @@ async function createPost(e) {
         allert.error(error);
         return
     }
-
+    
     let newPostRow = createPostRow(
         response.userId, 
         response.id, 
@@ -174,12 +177,10 @@ async function createPost(e) {
     tableBody.insertAdjacentHTML('beforeEnd', newPostRow);
     e.target.reset();
     allert.success();
+    modal.hide();
+
 
 }
-
-
-
-
 
 async function deletePost(e) {
     const result = await allert.confirm('Удалить запись ? ')
@@ -200,7 +201,6 @@ async function deletePost(e) {
      tableBody.querySelector(`[data-id="${postid}"]`).remove();
      allert.success();
      
-    
 
     
     
@@ -239,6 +239,7 @@ async function updatePost(e) {
     tableBody.querySelector(`[data-id="${response.updateId}"]`).innerHTML = newPostRow;
     e.target.reset();
     allert.success();
+    secondModal.hide()
 }
 
 createForm.addEventListener('submit',  createPost )  // создание записи
@@ -246,10 +247,11 @@ updateForm.addEventListener('submit',  updatePost )  // обновление з�
 
 
 tableBody.addEventListener("click", function (e) {    
-    if (e.target.className === "btn btn-outline-danger btn-sm  table-Button") {
+
+    if (e.target.className.includes('delete-button')) {
         deletePost(e);
     }
-    if (e.target.className === "btn btn-outline-primary btn-sm edit-Button") {
+    if (e.target.className.includes('edit-button') ) {
         setUpdateForm(e);
     }
 });

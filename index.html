@@ -23,14 +23,16 @@
         <h1>Posts</h1>
       </div>
       <div style ="margin: auto;" class="col-auto">
-        <button   type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button   type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#firstModal">
           Добавить запись
         </button>
       </div>
     </div>
 
 
-  <div id="exampleModal" class="modal" tabindex="-1">
+  <div id="firstModal" class="modal fade" tabindex="-1"
+    aria-labelledby="createPost"
+    aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -53,7 +55,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-              <button  class="btn btn-success formButton" data-bs-dismiss="modal">Сохранить изменения</button>
+              <button  class="btn btn-success formButton" >Сохранить изменения</button>
             </div>
           </form>
         </div>
@@ -62,7 +64,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="exampleModalTwo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="secondModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -89,7 +91,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-              <button data-bs-dismiss="modal" class="btn btn-success UpdateButton">Обновить </button>
+              <button  class="btn btn-success UpdateButton">Обновить </button>
             </div>
           </form>
         </div>
@@ -113,7 +115,7 @@
   <table class="table table-striped table-hover ">
     <thead>
       <tr>
-        <th>User ID</th>
+        <th class="text-nowrap" >User ID</th>
         <th>Title</th>
         <th>Body</th>
         <th>Actions</th>
