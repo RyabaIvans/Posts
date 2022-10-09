@@ -5,6 +5,8 @@ const modal = new bootstrap.Modal("#firstModal");
 const secondModal = new bootstrap.Modal("#secondModal");
 
 
+
+
 function HttpClient(baseUrl) {
     this.baseUrl = baseUrl;
 
@@ -258,3 +260,22 @@ tableBody.addEventListener("click", function (e) {
 
 
 
+function inputHandler({target}){
+    if (target.hasAttribute("data-reg")){
+        inputChek(target)
+    }
+}
+
+function inputChek(el){
+    const inputValue = el.value;
+    const inputReg = el.getAttribute('data-reg')
+    const reg = new RegExp(inputReg);
+    if (reg.test(inputValue)){
+        el.style.border = "2px solid rgb(0, 196, 0)"
+    } else {
+        el.style.border = "2px solid rgb(255, 0, 0)"
+        
+    }
+}
+updateForm.addEventListener("input" , inputHandler);
+createForm.addEventListener("input" , inputHandler);

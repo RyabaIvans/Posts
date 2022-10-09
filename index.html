@@ -43,15 +43,42 @@
           <form  role="form" id="create-form" class="main-Form">
             <div class="form-group">
               <label  for="userId">User ID: </label>
-              <input class="form-control" name="userId" type="number" placeholder="Введи id" >  
+              <input 
+              class="form-control" 
+              name="userId" type="number" 
+              placeholder="Введи id" 
+              required
+              >  
             </div>
             <div class="form-group">
               <label for="title">Title:</label>
-              <input class="form-control" name="title" type="text" >
+              <input 
+              class="form-control" 
+              name="title" 
+              type="text" 
+              data-reg="^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]+$" 
+              placeholder="ТІЛЬКИ УКРАЇНСЬКОЮ!"
+              required
+              data-bs-toggle="tooltip" 
+              data-bs-placement="top" 
+              title="ТІЛЬКИ УКРАЇНСЬКОЮ!"
+              >
             </div>
             <div class="form-group">
               <label  for="body">Body:</label>
-              <textarea class="form-control" name="body"></textarea>
+              <textarea 
+              class="form-control" 
+              name="body"
+              type="textarea"
+              data-reg="^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]+$" 
+              placeholder="ТІЛЬКИ УКРАЇНСЬКОЮ!"
+              required
+              data-bs-toggle="tooltip" 
+              data-bs-placement="top" 
+              title="ТІЛЬКИ УКРАЇНСЬКОЮ!"
+              
+              >
+            </textarea>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
@@ -72,18 +99,47 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
         </div>
         <div class="modal-body">
-          <form id="update-form" class="main-Form">
+          <form id="update-form" class="main-Form ">
             <div class="form-group">
               <label  for="userId">User ID: </label>
-              <input class="form-control" name="userId" type="number"  readonly  >  
+              <input 
+               class="form-control"
+               name="userId" 
+               type="number"  
+               readonly  
+               >  
             </div>
             <div class="form-group">
               <label for="title">Title:</label>
-              <input class="form-control" name="title" type="text" >
+              <input 
+                class="form-control " 
+                name="title" 
+                type="text"
+                id="titleId"
+                data-reg="^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]+$" 
+                placeholder="ТІЛЬКИ УКРАЇНСЬКОЮ!"
+                required
+                data-bs-toggle="tooltip" 
+                data-bs-placement="top" 
+                title="ТІЛЬКИ УКРАЇНСЬКОЮ!"
+
+
+                />
             </div>
             <div class="form-group">
               <label  for="body">Body:</label>
-              <textarea class="form-control" name="body"></textarea>
+              <textarea 
+                class="form-control " 
+                name="body"
+                data-reg="^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]+$" 
+                required
+                placeholder="ТІЛЬКИ УКРАЇНСЬКОЮ!"
+                data-bs-toggle="tooltip" 
+                data-bs-placement="top" 
+                title="ТІЛЬКИ УКРАЇНСЬКОЮ!"
+                
+                >
+              </textarea>
             </div>
             <div hidden class="form-group">
               <label  for="userId">updateId: </label>
@@ -91,7 +147,11 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-              <button  class="btn btn-success UpdateButton">Обновить </button>
+              <button 
+              id="confirmButton" 
+              class="btn btn-success UpdateButton" 
+              >
+              Обновить </button>
             </div>
           </form>
         </div>
