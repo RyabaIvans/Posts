@@ -40,7 +40,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
         </div>
         <div class="modal-body">
-          <form  role="form" id="create-form" class="main-Form">
+          <form  role="form" id="create-form" class="main-Form was-validated">
             <div class="form-group">
               <label  for="userId">User ID: </label>
               <input 
@@ -49,36 +49,35 @@
               placeholder="Введи id" 
               required
               >  
+              <div class="invalid-feedback">
+                Только числовое значение.
+              </div>
             </div>
+            
             <div class="form-group">
               <label for="title">Title:</label>
               <input 
               class="form-control" 
               name="title" 
               type="text" 
-              data-reg="^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]+$" 
-              placeholder="ТІЛЬКИ УКРАЇНСЬКОЮ!"
+              minlength="8"
               required
-              data-bs-toggle="tooltip" 
-              data-bs-placement="top" 
-              title="ТІЛЬКИ УКРАЇНСЬКОЮ!"
               >
+              <div class="invalid-feedback">
+                Минимальное количество символов - 8 
+              </div>
             </div>
             <div class="form-group">
               <label  for="body">Body:</label>
               <textarea 
-              class="form-control" 
+              class="form-control is-invalid" 
               name="body"
-              type="textarea"
-              data-reg="^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]+$" 
-              placeholder="ТІЛЬКИ УКРАЇНСЬКОЮ!"
+              type="text"
               required
-              data-bs-toggle="tooltip" 
-              data-bs-placement="top" 
-              title="ТІЛЬКИ УКРАЇНСЬКОЮ!"
-              
-              >
-            </textarea>
+              ></textarea>
+              <div class="invalid-feedback">
+                Введите описание 
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
@@ -99,7 +98,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
         </div>
         <div class="modal-body">
-          <form id="update-form" class="main-Form ">
+          <form id="update-form" class="main-Form was-validated">
             <div class="form-group">
               <label  for="userId">User ID: </label>
               <input 
@@ -115,31 +114,23 @@
                 class="form-control " 
                 name="title" 
                 type="text"
-                id="titleId"
-                data-reg="^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]+$" 
-                placeholder="ТІЛЬКИ УКРАЇНСЬКОЮ!"
+                minlength="8"        
                 required
-                data-bs-toggle="tooltip" 
-                data-bs-placement="top" 
-                title="ТІЛЬКИ УКРАЇНСЬКОЮ!"
-
-
                 />
+                <div class="invalid-feedback">
+                  Минимальное количество символов - 8 
+                </div>
             </div>
             <div class="form-group">
               <label  for="body">Body:</label>
               <textarea 
                 class="form-control " 
                 name="body"
-                data-reg="^[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]+$" 
                 required
-                placeholder="ТІЛЬКИ УКРАЇНСЬКОЮ!"
-                data-bs-toggle="tooltip" 
-                data-bs-placement="top" 
-                title="ТІЛЬКИ УКРАЇНСЬКОЮ!"
-                
-                >
-              </textarea>
+                ></textarea>
+                <div class="invalid-feedback">
+                  Отредактируйте или добавьте новый текст 
+                </div>
             </div>
             <div hidden class="form-group">
               <label  for="userId">updateId: </label>
