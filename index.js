@@ -1,9 +1,11 @@
 const tableBody = document.querySelector("tbody");
 const createForm = document.getElementById('create-form');
 const updateForm = document.getElementById('update-form');
-const modal = new bootstrap.Modal("#firstModal");
-const secondModal = new bootstrap.Modal("#secondModal");
+const createModal = new bootstrap.Modal("#createModal");
+const updateModal = new bootstrap.Modal("#updateModal");
 
+
+const forms = document.querySelectorAll('.needs-validation')
 
 
 
@@ -132,7 +134,7 @@ function createPostRow(userId, id, title, body) {
     <td>${userId}</td>  
     <td>${title}</td>  
     <td>${body}</td>
-    <td><button data-id="${id}" class="btn btn-outline-primary text-nowrap btn-sm edit-button" data-bs-toggle="modal" data-bs-target="#secondModal" > <i class="bi bi-pencil"></i> Edit</button></td>  
+    <td><button data-id="${id}" class="btn btn-outline-primary text-nowrap btn-sm edit-button" data-bs-toggle="modal" data-bs-target="#updateModal" > <i class="bi bi-pencil"></i> Edit</button></td>  
     <td><button data-id="${id}" class="btn btn-outline-danger text-nowrap  btn-sm  delete-button"><i class="bi bi-trash"></i>Delete</button></td>
     
     </tr>`;
@@ -160,6 +162,13 @@ async function loadPosts() {
 loadPosts();
 
 
+function chekValidation(formName){
+   formName.classList.add("was-validated")
+   return formName.checkValidity()
+}
+
+
+    
 async function createPost(e) {
     let payLoad =  getFormData(e.target) // получение формы без привязки 
     e.preventDefault();
@@ -176,13 +185,21 @@ async function createPost(e) {
         response.title, 
         response.body
         );
+
     tableBody.insertAdjacentHTML('beforeEnd', newPostRow);
+
+    if (!chekValidation(e.target)){
+        return
+    }
+    
     e.target.reset();
     allert.success();
-    modal.hide();
+    createModal.hide();
 
 
 }
+
+
 
 async function deletePost(e) {
     const result = await allert.confirm('Удалить запись ? ')
@@ -239,11 +256,16 @@ async function updatePost(e) {
         response.body
         );
     tableBody.querySelector(`[data-id="${response.updateId}"]`).innerHTML = newPostRow;
+    if (!chekValidation(e.target)){
+        return
+    }
     e.target.reset();
     allert.success();
-    secondModal.hide()
+    updateModal.hide()
 }
 
+
+//
 createForm.addEventListener('submit',  createPost )  // создание записи
 updateForm.addEventListener('submit',  updatePost )  // обновление записи
 

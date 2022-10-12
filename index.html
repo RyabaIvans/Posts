@@ -23,14 +23,14 @@
         <h1>Posts</h1>
       </div>
       <div style ="margin: auto;" class="col-auto">
-        <button   type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#firstModal">
+        <button   type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#createModal">
           Добавить запись
         </button>
       </div>
     </div>
 
 
-  <div id="firstModal" class="modal fade" tabindex="-1"
+  <div id="createModal" class="modal fade" tabindex="-1"
     aria-labelledby="createPost"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -40,7 +40,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
         </div>
         <div class="modal-body">
-          <form  role="form" id="create-form" class="main-Form was-validated">
+          <form  role="form" id="create-form" class="main-Form "  novalidate>
             <div class="form-group">
               <label  for="userId">User ID: </label>
               <input 
@@ -70,7 +70,7 @@
             <div class="form-group">
               <label  for="body">Body:</label>
               <textarea 
-              class="form-control is-invalid" 
+              class="form-control " 
               name="body"
               type="text"
               required
@@ -81,7 +81,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-              <button  class="btn btn-success formButton" >Сохранить изменения</button>
+              <button id="modalButton" class="btn btn-success formButton" >Сохранить изменения</button>
             </div>
           </form>
         </div>
@@ -90,7 +90,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="secondModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -98,7 +98,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
         </div>
         <div class="modal-body">
-          <form id="update-form" class="main-Form was-validated">
+          <form id="update-form" class="main-Form "novalidate>
             <div class="form-group">
               <label  for="userId">User ID: </label>
               <input 
