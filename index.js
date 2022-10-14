@@ -1,3 +1,4 @@
+const Body = document.getElementById("forSpan");
 const tableBody = document.querySelector("tbody");
 const createForm = document.getElementById("create-form");
 const updateForm = document.getElementById("update-form");
@@ -96,11 +97,9 @@ const api = new HttpClient("https://jsonplaceholder.typicode.com");
 
 const post = {
   getAll() {
-    // все посты
     return api.get(`posts`);
   },
   getById(id) {
-    // один нужный пост
     return api.get(`posts/${id}`);
   },
   delete(id) {
@@ -114,14 +113,29 @@ const post = {
   },
 };
 
+const spinner = {
+  on(form) {
+    form.getElementsByTagName("span")[0].style.display = "inline-block";
+  },
+  off(form) {
+    form.getElementsByTagName("span")[0].style.display = "none";
+  },
+};
+
 function createPostRow(userId, id, title, body) {
   const postRow = `<tr data-id="${id}" >
     <td>${userId}</td>  
     <td>${title}</td>  
     <td>${body}</td>
     <td><button data-id="${id}" class="btn btn-outline-primary text-nowrap btn-sm edit-button" data-bs-toggle="modal" data-bs-target="#updateModal" > <i class="bi bi-pencil"></i> Edit</button></td>  
-    <td><button data-id="${id}" class="btn btn-outline-danger text-nowrap  btn-sm  delete-button"><i class="bi bi-trash"></i>Delete</button></td>
-    
+    <td><button data-id="${id}" class="btn btn-outline-danger text-nowrap  btn-sm  delete-button">
+    <span 
+                 class="spinner-border spinner-border-sm" 
+                 role="status"
+                 style="display: none" ></span>
+    <i class="bi bi-trash"></i>
+    Delete</button>
+    </td>
     </tr>`;
 
   return postRow;
@@ -139,6 +153,7 @@ async function loadPosts() {
   }, "");
 
   tableBody.innerHTML = postTableRows;
+  spinner.off(Body);
 }
 
 loadPosts();
@@ -150,10 +165,12 @@ function chekValidation(form) {
 
 async function createPost(e) {
   e.preventDefault();
+
   if (!chekValidation(e.target)) {
     return;
   }
-  let payLoad = getFormData(e.target); // получение формы без привязки
+  spinner.on(e.target);
+  let payLoad = getFormData(e.target);
 
   const { response, error } = await post.create(payLoad);
   if (error) {
@@ -172,10 +189,12 @@ async function createPost(e) {
 
   e.target.reset();
   allert.success();
+  spinner.off(e.target);
   createModal.hide();
 }
 
 async function deletePost(e) {
+  spinner.on(e.target);
   const result = await allert.confirm("Удалить запись ? ");
 
   if (result.dismiss) {
@@ -191,11 +210,12 @@ async function deletePost(e) {
   }
 
   tableBody.querySelector(`[data-id="${postid}"]`).remove();
+  spinner.off(e.target);
   allert.success();
 }
 
 async function setUpdateForm(e) {
-  const postId = e.target.dataset.id; // передали айди через форму
+  const postId = e.target.dataset.id;
   const { response, error } = await post.getById(postId);
   if (error) {
     allert.error(error);
@@ -212,6 +232,7 @@ async function updatePost(e) {
   if (!chekValidation(e.target)) {
     return;
   }
+  spinner.on(e.target);
   const payLoad = getFormData(e.target);
 
   const { response, error } = await post.update(payLoad.updateId, payLoad);
@@ -230,12 +251,12 @@ async function updatePost(e) {
 
   e.target.reset();
   allert.success();
+  spinner.off(e.target);
   updateModal.hide();
 }
 
-//
-createForm.addEventListener("submit", createPost); // создание записи
-updateForm.addEventListener("submit", updatePost); // обновление записи
+createForm.addEventListener("submit", createPost);
+updateForm.addEventListener("submit", updatePost);
 
 tableBody.addEventListener("click", function (e) {
   if (e.target.className.includes("delete-button")) {
