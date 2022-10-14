@@ -143,9 +143,9 @@ async function loadPosts() {
 
 loadPosts();
 
-function chekValidation(formName) {
-  formName.classList.add("was-validated");
-  return formName.checkValidity();
+function chekValidation(form) {
+  form.classList.add("was-validated");
+  return form.checkValidity();
 }
 
 async function createPost(e) {
