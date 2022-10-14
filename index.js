@@ -1,4 +1,4 @@
-const Body = document.getElementById("forSpan");
+const body = document.getElementById("spinnerTable");
 const tableBody = document.querySelector("tbody");
 const createForm = document.getElementById("create-form");
 const updateForm = document.getElementById("update-form");
@@ -115,10 +115,11 @@ const post = {
 
 const spinner = {
   on(form) {
-    form.getElementsByTagName("span")[0].style.display = "inline-block";
+    form.querySelector('span[data-spinner="spinner"]').style.display =
+      "inline-block";
   },
   off(form) {
-    form.getElementsByTagName("span")[0].style.display = "none";
+    form.querySelector('span[data-spinner="spinner"]').style.display = "none";
   },
 };
 
@@ -131,8 +132,10 @@ function createPostRow(userId, id, title, body) {
     <td><button data-id="${id}" class="btn btn-outline-danger text-nowrap  btn-sm  delete-button">
     <span 
                  class="spinner-border spinner-border-sm" 
+                 data-spinner="spinner"
                  role="status"
-                 style="display: none" ></span>
+                 style="display: none" >
+                 </span>
     <i class="bi bi-trash"></i>
     Delete</button>
     </td>
@@ -153,7 +156,7 @@ async function loadPosts() {
   }, "");
 
   tableBody.innerHTML = postTableRows;
-  spinner.off(Body);
+  spinner.off(body);
 }
 
 loadPosts();

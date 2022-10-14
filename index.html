@@ -32,7 +32,6 @@
             Добавить запись
           </button>
         </div>
-        
       </div>
 
       <div
@@ -101,6 +100,7 @@
                   <button id="saveButton" class="btn btn-success">
                     <span
                       class="spinner-border spinner-border-sm"
+                      data-spinner="spinner"
                       role="status"
                       style="display: none"
                     ></span
@@ -112,7 +112,7 @@
           </div>
         </div>
       </div>
-      
+
       <div
         class="modal fade"
         id="updateModal"
@@ -186,6 +186,7 @@
                   <button class="btn btn-success">
                     <span
                       class="spinner-border spinner-border-sm"
+                      data-spinner="spinner"
                       role="status"
                       style="display: none"
                     ></span>
@@ -197,16 +198,17 @@
           </div>
         </div>
       </div>
-     
-      <div id="forSpan" class="text-center"><span
-        class="spinner-border spinner-border-sm text-primary "
-        style="width: 4rem; height: 4rem;"
-        role="status"
-        
-      ></span></div>
+
+      <div id="spinnerTable" class="text-center">
+        <span
+          class="spinner-border spinner-border-sm text-primary"
+          data-spinner="spinner"
+          style="width: 4rem; height: 4rem"
+          role="status"
+        ></span>
+      </div>
 
       <table id="tableId" class="table table-striped table-hover">
-       
         <thead>
           <tr>
             <th class="text-nowrap">User ID</th>
@@ -215,8 +217,7 @@
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-        </tbody>
+        <tbody></tbody>
       </table>
 
       <script
