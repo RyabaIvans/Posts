@@ -148,10 +148,12 @@ async function loadPosts() {
   const { response, error } = await post.getAll();
   if (error) {
     allert.error(error);
+    spinner.off(spinnerTable);
     return;
   }
 
   const postTableRows = response.reduce(function (acc, post) {
+    spinner.off(spinnerTable);
     return acc + createPostRow(post.userId, post.id, post.title, post.body);
   }, "");
 
@@ -170,6 +172,7 @@ async function createPost(e) {
   e.preventDefault();
 
   if (!chekValidation(e.target)) {
+    spinner.off(e.target);
     return;
   }
   spinner.on(e.target);
@@ -178,6 +181,7 @@ async function createPost(e) {
   const { response, error } = await post.create(payLoad);
   if (error) {
     allert.error(error);
+    spinner.off(e.target);
     return;
   }
 
@@ -201,6 +205,7 @@ async function deletePost(e) {
   const result = await allert.confirm("Удалить запись ? ");
 
   if (result.dismiss) {
+    spinner.off(e.target);
     return;
   }
 
@@ -209,6 +214,7 @@ async function deletePost(e) {
   const { error } = await post.delete(postid);
   if (error) {
     allert.error(error);
+    spinner.off(e.target);
     return;
   }
 
@@ -233,6 +239,7 @@ async function setUpdateForm(e) {
 async function updatePost(e) {
   e.preventDefault();
   if (!chekValidation(e.target)) {
+    spinner.off(e.target);
     return;
   }
   spinner.on(e.target);
@@ -240,6 +247,7 @@ async function updatePost(e) {
 
   const { response, error } = await post.update(payLoad.updateId, payLoad);
   if (error) {
+    spinner.off(e.target);
     allert.error(error);
     return;
   }
