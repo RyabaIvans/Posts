@@ -1,4 +1,4 @@
-const spinerForm = document.getElementById("spinner-table");
+const spinnerTable = document.getElementById("spinner-table");
 const tableBody = document.querySelector("tbody");
 const createForm = document.getElementById("create-form");
 const updateForm = document.getElementById("update-form");
@@ -114,12 +114,12 @@ const post = {
 };
 
 const spinner = {
-  on(form) {
-    form.querySelector('[data-spinner="spinner"]').style.display =
+  on(element) {
+    element.querySelector('[data-spinner="spinner"]').style.display =
       "inline-block";
   },
-  off(form) {
-    form.querySelector('[data-spinner="spinner"]').style.display = "none";
+  off(element) {
+    element.querySelector('[data-spinner="spinner"]').style.display = "none";
   },
 };
 
@@ -156,7 +156,7 @@ async function loadPosts() {
   }, "");
 
   tableBody.innerHTML = postTableRows;
-  spinner.off(spinerForm);
+  spinner.off(spinnerTable);
 }
 
 loadPosts();
