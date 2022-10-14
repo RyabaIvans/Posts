@@ -1,4 +1,4 @@
-const body = document.getElementById("spinnerTable");
+const spinerForm = document.getElementById("spinner-table");
 const tableBody = document.querySelector("tbody");
 const createForm = document.getElementById("create-form");
 const updateForm = document.getElementById("update-form");
@@ -115,11 +115,11 @@ const post = {
 
 const spinner = {
   on(form) {
-    form.querySelector('span[data-spinner="spinner"]').style.display =
+    form.querySelector('[data-spinner="spinner"]').style.display =
       "inline-block";
   },
   off(form) {
-    form.querySelector('span[data-spinner="spinner"]').style.display = "none";
+    form.querySelector('[data-spinner="spinner"]').style.display = "none";
   },
 };
 
@@ -156,7 +156,7 @@ async function loadPosts() {
   }, "");
 
   tableBody.innerHTML = postTableRows;
-  spinner.off(body);
+  spinner.off(spinerForm);
 }
 
 loadPosts();
