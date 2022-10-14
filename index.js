@@ -1,136 +1,121 @@
 const tableBody = document.querySelector("tbody");
-const createForm = document.getElementById('create-form');
-const updateForm = document.getElementById('update-form');
+const createForm = document.getElementById("create-form");
+const updateForm = document.getElementById("update-form");
 const createModal = new bootstrap.Modal("#createModal");
 const updateModal = new bootstrap.Modal("#updateModal");
 
-
-const forms = document.querySelectorAll('.needs-validation')
-
-
-
 function HttpClient(baseUrl) {
-    this.baseUrl = baseUrl;
+  this.baseUrl = baseUrl;
 
-    const fetchWrapper = (promise) => {
-        return new Promise(async (resolve) => {
-            try {
-                const response = await promise;
-                const json = await response.json();
-                if (response.ok) {
-                    
-                    resolve({ response: json, error: null });
-                    return;
-                }
-
-                resolve({ response: null, error: json });
-            } catch (error) {
-                resolve({ response: null, error });
-            }
-        });
-    };
-
-    return {
-        get: (path) => {
-            return fetchWrapper(fetch(`${this.baseUrl}/${path}`));
-        },
-
-        post: (path, body) => {
-            return fetchWrapper(
-                fetch(
-                    `${this.baseUrl}/${path}`, {
-                    method: 'POST',
-                    body: JSON.stringify(body),
-                    headers: { 'Content-type': 'application/json; charset=UTF-8', }
-                })
-            )
-        },
-
-        delete: (path) => {
-            return fetchWrapper(
-                fetch(
-                    `${this.baseUrl}/${path}`, {
-                    method: 'DELETE'
-                })
-            )
-        },
-
-
-        update: (path, body) => {
-            return fetchWrapper(
-                fetch(
-                    `${this.baseUrl}/${path}`, {
-                    method: 'PATCH',
-                    body: JSON.stringify(body),
-                    headers: { 'Content-type': 'application/json; charset=UTF-8', }
-                })
-            )
+  const fetchWrapper = (promise) => {
+    return new Promise(async (resolve) => {
+      try {
+        const response = await promise;
+        const json = await response.json();
+        if (response.ok) {
+          resolve({ response: json, error: null });
+          return;
         }
-    };
-}
 
+        resolve({ response: null, error: json });
+      } catch (error) {
+        resolve({ response: null, error });
+      }
+    });
+  };
+
+  return {
+    get: (path) => {
+      return fetchWrapper(fetch(`${this.baseUrl}/${path}`));
+    },
+
+    post: (path, body) => {
+      return fetchWrapper(
+        fetch(`${this.baseUrl}/${path}`, {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: { "Content-type": "application/json; charset=UTF-8" },
+        })
+      );
+    },
+
+    delete: (path) => {
+      return fetchWrapper(
+        fetch(`${this.baseUrl}/${path}`, {
+          method: "DELETE",
+        })
+      );
+    },
+
+    update: (path, body) => {
+      return fetchWrapper(
+        fetch(`${this.baseUrl}/${path}`, {
+          method: "PATCH",
+          body: JSON.stringify(body),
+          headers: { "Content-type": "application/json; charset=UTF-8" },
+        })
+      );
+    },
+  };
+}
 
 function getFormData(form) {
-    const formData = new FormData(form);
-    return  Object.fromEntries(formData.entries());
-    
+  const formData = new FormData(form);
+  return Object.fromEntries(formData.entries());
 }
-
-
-
 
 const allert = {
-    error(error){
-        return Swal.fire({
-            icon: 'error',
-            title: 'Ошибка',
-            text: 'Что то пошло не так',
-            footer: `${error}`  
-          })
-    }
-    ,
-    success() {
-        Swal.fire({
-            title:'Операция выполнена успешно!',
-            icon: 'success'
-            }
-          )
-    } , 
-    confirm(title){
-        return Swal.fire({
-            title: title,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Да , конечно!',
-            cancelButtonText: 'Нет!'
-          })
-    }
-}
+  error(error) {
+    return Swal.fire({
+      icon: "error",
+      title: "Ошибка",
+      text: "Что то пошло не так",
+      footer: `${error}`,
+    });
+  },
+  success() {
+    Swal.fire({
+      title: "Операция выполнена успешно!",
+      icon: "success",
+    });
+  },
+  confirm(title) {
+    return Swal.fire({
+      title: title,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Да , конечно!",
+      cancelButtonText: "Нет!",
+    });
+  },
+};
 
 const api = new HttpClient("https://jsonplaceholder.typicode.com");
 
 const post = {
-    getAll() {  // все посты
-    return  api.get(`posts`)
-    } ,
-    getById(id) {  // один нужный пост
-    return  api.get(`posts/${id}`)
-    },
-    delete(id){
-    return api.delete(`posts/${id}`)
-    } , 
-    create(payLoad) {
-    return   api.post('posts', payLoad )   
-    } ,
-    update(id , payLoad) {
-    return   api.update(`posts/${id}`, payLoad)
-    }
-}
+  getAll() {
+    // все посты
+    return api.get(`posts`);
+  },
+  getById(id) {
+    // один нужный пост
+    return api.get(`posts/${id}`);
+  },
+  delete(id) {
+    return api.delete(`posts/${id}`);
+  },
+  create(payLoad) {
+    return api.post("posts", payLoad);
+  },
+  update(id, payLoad) {
+    return api.update(`posts/${id}`, payLoad);
+  },
+};
 
 function createPostRow(userId, id, title, body) {
-    const postRow = `<tr data-id="${id}" >
+  const postRow = `<tr data-id="${id}" >
     <td>${userId}</td>  
     <td>${title}</td>  
     <td>${body}</td>
@@ -139,146 +124,124 @@ function createPostRow(userId, id, title, body) {
     
     </tr>`;
 
-    return postRow;
+  return postRow;
 }
 
 async function loadPosts() {
+  const { response, error } = await post.getAll();
+  if (error) {
+    allert.error(error);
+    return;
+  }
 
-    const { response, error } = await post.getAll()
-    if (error) {
-        allert.error(error);
-        return
-    }
-    
-    
-    const postTableRows = response.reduce(function (acc, post) {
-        return acc + createPostRow(post.userId, post.id, post.title, post.body);
-    }, "");
+  const postTableRows = response.reduce(function (acc, post) {
+    return acc + createPostRow(post.userId, post.id, post.title, post.body);
+  }, "");
 
-    tableBody.innerHTML = postTableRows;
-
+  tableBody.innerHTML = postTableRows;
 }
 
 loadPosts();
 
-
-function chekValidation(formName){
-   formName.classList.add("was-validated")
-   return formName.checkValidity()
+function chekValidation(formName) {
+  formName.classList.add("was-validated");
+  return formName.checkValidity();
 }
 
-
-    
 async function createPost(e) {
-    let payLoad =  getFormData(e.target) // получение формы без привязки 
-    e.preventDefault();
+  e.preventDefault();
+  if (!chekValidation(e.target)) {
+    return;
+  }
+  let payLoad = getFormData(e.target); // получение формы без привязки
 
-    const { response, error } = await post.create(payLoad)
-    if (error) {
-        allert.error(error);
-        return
-    }
-    
-    let newPostRow = createPostRow(
-        response.userId, 
-        response.id, 
-        response.title, 
-        response.body
-        );
+  const { response, error } = await post.create(payLoad);
+  if (error) {
+    allert.error(error);
+    return;
+  }
 
-    tableBody.insertAdjacentHTML('beforeEnd', newPostRow);
+  let newPostRow = createPostRow(
+    response.userId,
+    response.id,
+    response.title,
+    response.body
+  );
 
-    if (!chekValidation(e.target)){
-        return
-    }
-    
-    e.target.reset();
-    allert.success();
-    createModal.hide();
+  tableBody.insertAdjacentHTML("beforeEnd", newPostRow);
 
-
+  e.target.reset();
+  allert.success();
+  createModal.hide();
 }
-
-
 
 async function deletePost(e) {
-    const result = await allert.confirm('Удалить запись ? ')
+  const result = await allert.confirm("Удалить запись ? ");
 
-    if (result.dismiss) {
-        return
-    }
+  if (result.dismiss) {
+    return;
+  }
 
-    const postid = e.target.dataset.id;
-    
-    const { error } = await post.delete(postid)
-    if (error) {
-        allert.error(error);
-        return
-    }   
-      
+  const postid = e.target.dataset.id;
 
-     tableBody.querySelector(`[data-id="${postid}"]`).remove();
-     allert.success();
-     
+  const { error } = await post.delete(postid);
+  if (error) {
+    allert.error(error);
+    return;
+  }
 
-    
-    
-   
+  tableBody.querySelector(`[data-id="${postid}"]`).remove();
+  allert.success();
 }
 
 async function setUpdateForm(e) {
-    const postId = e.target.dataset.id; // передали айди через форму
-    const { response, error } = await post.getById(postId)
-    if (error) {
-        allert.error(error);
-        return
-    }
-    updateForm.userId.value = response.userId;
-    updateForm.title.value = response.title;
-    updateForm.body.value = response.body;
-    updateForm.updateId.value = response.id;
+  const postId = e.target.dataset.id; // передали айди через форму
+  const { response, error } = await post.getById(postId);
+  if (error) {
+    allert.error(error);
+    return;
+  }
+  updateForm.userId.value = response.userId;
+  updateForm.title.value = response.title;
+  updateForm.body.value = response.body;
+  updateForm.updateId.value = response.id;
 }
-
 
 async function updatePost(e) {
-    e.preventDefault();
-    const payLoad =  getFormData(e.target);
-    
-    const { response, error } = await post.update(payLoad.updateId , payLoad )
-    if (error) {
-        allert.error(error);
-        return
-    }
-    let newPostRow = createPostRow(
-        response.userId,
-        response.updateId,
-        response.title, 
-        response.body
-        );
-    tableBody.querySelector(`[data-id="${response.updateId}"]`).innerHTML = newPostRow;
-    if (!chekValidation(e.target)){
-        return
-    }
-    e.target.reset();
-    allert.success();
-    updateModal.hide()
+  e.preventDefault();
+  if (!chekValidation(e.target)) {
+    return;
+  }
+  const payLoad = getFormData(e.target);
+
+  const { response, error } = await post.update(payLoad.updateId, payLoad);
+  if (error) {
+    allert.error(error);
+    return;
+  }
+  let newPostRow = createPostRow(
+    response.userId,
+    response.updateId,
+    response.title,
+    response.body
+  );
+  tableBody.querySelector(`[data-id="${response.updateId}"]`).innerHTML =
+    newPostRow;
+
+  e.target.reset();
+  allert.success();
+  updateModal.hide();
 }
 
-
 //
-createForm.addEventListener('submit',  createPost )  // создание записи
-updateForm.addEventListener('submit',  updatePost )  // обновление записи
+createForm.addEventListener("submit", createPost); // создание записи
+updateForm.addEventListener("submit", updatePost); // обновление записи
 
-
-tableBody.addEventListener("click", function (e) {    
-
-    if (e.target.className.includes('delete-button')) {
-        deletePost(e);
-    }
-    if (e.target.className.includes('edit-button') ) {
-        setUpdateForm(e);
-    }
+tableBody.addEventListener("click", function (e) {
+  if (e.target.className.includes("delete-button")) {
+    deletePost(e);
+  }
+  if (e.target.className.includes("edit-button")) {
+    setUpdateForm(e);
+  }
 });
-
-
-
