@@ -139,6 +139,7 @@ function createPostRow(userId, id, title, body) {
     <i class="bi bi-trash"></i>
     Delete</button>
     </td>
+    <td><button data-id="${id}" class="btn btn-outline-primary text-nowrap btn-sm "  > <i class="bi bi-person-bounding-box"></i> <a href="https://developer.mozilla.org">User Photo</a></button></td>
     </tr>`;
 
   return postRow;
@@ -153,7 +154,6 @@ async function loadPosts() {
   }
 
   const postTableRows = response.reduce(function (acc, post) {
-    spinner.off(spinnerTable);
     return acc + createPostRow(post.userId, post.id, post.title, post.body);
   }, "");
 
