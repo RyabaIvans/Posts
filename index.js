@@ -128,8 +128,8 @@ function createPostRow(userId, id, title, body) {
     <td>${userId}</td>  
     <td>${title}</td>  
     <td>${body}</td>
-    <td><button data-id="${id}" class="btn btn-outline-primary text-nowrap btn-sm edit-button" data-bs-toggle="modal" data-bs-target="#updateModal" > <i class="bi bi-pencil"></i> Edit</button></td>  
-    <td><button data-id="${id}" class="btn btn-outline-danger text-nowrap  btn-sm  delete-button">
+    <td class="align-middle"><button data-id="${id}" class="btn btn-outline-primary text-nowrap btn-sm edit-button " data-bs-toggle="modal" data-bs-target="#updateModal" > <i class="bi bi-pencil"></i> Edit</button></td>  
+    <td class="align-middle"><button data-id="${id}" class="btn btn-outline-danger text-nowrap  btn-sm  delete-button">
     <span 
                  class="spinner-border spinner-border-sm" 
                  data-spinner="spinner"
@@ -139,7 +139,7 @@ function createPostRow(userId, id, title, body) {
     <i class="bi bi-trash"></i>
     Delete</button>
     </td>
-    <td><button data-id="${id}" class="btn btn-outline-primary text-nowrap btn-sm "  > <i class="bi bi-person-bounding-box"></i> <a href="https://developer.mozilla.org">User Photo</a></button></td>
+    <td class="align-middle"><button class="btn btn-outline-primary text-nowrap btn-sm " onClick='location.href=""' ><i class="bi bi-person-bounding-box"></i> User Photo</a></button></td>
     </tr>`;
 
   return postRow;
