@@ -5,123 +5,11 @@ const updateForm = document.getElementById("update-form");
 const createModal = new bootstrap.Modal("#createModal");
 const updateModal = new bootstrap.Modal("#updateModal");
 
-function HttpClient(baseUrl) {
-  this.baseUrl = baseUrl;
-
-  const fetchWrapper = (promise) => {
-    return new Promise(async (resolve) => {
-      try {
-        const response = await promise;
-        const json = await response.json();
-        if (response.ok) {
-          resolve({ response: json, error: null });
-          return;
-        }
-
-        resolve({ response: null, error: json });
-      } catch (error) {
-        resolve({ response: null, error });
-      }
-    });
-  };
-
-  return {
-    get: (path) => {
-      return fetchWrapper(fetch(`${this.baseUrl}/${path}`));
-    },
-
-    post: (path, body) => {
-      return fetchWrapper(
-        fetch(`${this.baseUrl}/${path}`, {
-          method: "POST",
-          body: JSON.stringify(body),
-          headers: { "Content-type": "application/json; charset=UTF-8" },
-        })
-      );
-    },
-
-    delete: (path) => {
-      return fetchWrapper(
-        fetch(`${this.baseUrl}/${path}`, {
-          method: "DELETE",
-        })
-      );
-    },
-
-    update: (path, body) => {
-      return fetchWrapper(
-        fetch(`${this.baseUrl}/${path}`, {
-          method: "PATCH",
-          body: JSON.stringify(body),
-          headers: { "Content-type": "application/json; charset=UTF-8" },
-        })
-      );
-    },
-  };
-}
-
+import * as myModule from "./modules/fetch-module.js";
 function getFormData(form) {
   const formData = new FormData(form);
   return Object.fromEntries(formData.entries());
 }
-
-const allert = {
-  error(error) {
-    return Swal.fire({
-      icon: "error",
-      title: "Ошибка",
-      text: "Что то пошло не так",
-      footer: `${error}`,
-    });
-  },
-  success() {
-    Swal.fire({
-      title: "Операция выполнена успешно!",
-      icon: "success",
-    });
-  },
-  confirm(title) {
-    return Swal.fire({
-      title: title,
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Да , конечно!",
-      cancelButtonText: "Нет!",
-    });
-  },
-};
-
-const api = new HttpClient("https://jsonplaceholder.typicode.com");
-
-const post = {
-  getAll() {
-    return api.get(`posts`);
-  },
-  getById(id) {
-    return api.get(`posts/${id}`);
-  },
-  delete(id) {
-    return api.delete(`posts/${id}`);
-  },
-  create(payLoad) {
-    return api.post("posts", payLoad);
-  },
-  update(id, payLoad) {
-    return api.update(`posts/${id}`, payLoad);
-  },
-};
-
-const spinner = {
-  on(element) {
-    element.querySelector('[data-spinner="spinner"]').style.display =
-      "inline-block";
-  },
-  off(element) {
-    element.querySelector('[data-spinner="spinner"]').style.display = "none";
-  },
-};
 
 function createPostRow(userId, id, title, body) {
   const postRow = `<tr data-id="${id}" >
@@ -139,17 +27,17 @@ function createPostRow(userId, id, title, body) {
     <i class="bi bi-trash"></i>
     Delete</button>
     </td>
-    <td class="align-middle"><button class="btn btn-outline-primary text-nowrap btn-sm " onClick='location.href=""' ><i class="bi bi-person-bounding-box"></i> User Photo</a></button></td>
+    <td class="align-middle"><button  data-id="${id}" class="btn btn-outline-primary text-nowrap btn-sm user-photo-button "' ><i class="bi bi-person-bounding-box"></i> User Photo</a></button></td>
     </tr>`;
 
   return postRow;
 }
 
 async function loadPosts() {
-  const { response, error } = await post.getAll();
+  const { response, error } = await myModule.post.getAll();
   if (error) {
-    allert.error(error);
-    spinner.off(spinnerTable);
+    myModule.allert.error(error);
+    myModule.spinner.off(spinnerTable);
     return;
   }
 
@@ -158,7 +46,7 @@ async function loadPosts() {
   }, "");
 
   tableBody.innerHTML = postTableRows;
-  spinner.off(spinnerTable);
+  myModule.spinner.off(spinnerTable);
 }
 
 loadPosts();
@@ -172,16 +60,16 @@ async function createPost(e) {
   e.preventDefault();
 
   if (!chekValidation(e.target)) {
-    spinner.off(e.target);
+    myModule.spinner.off(e.target);
     return;
   }
-  spinner.on(e.target);
+  myModule.spinner.on(e.target);
   let payLoad = getFormData(e.target);
 
-  const { response, error } = await post.create(payLoad);
+  const { response, error } = await myModule.post.create(payLoad);
   if (error) {
-    allert.error(error);
-    spinner.off(e.target);
+    myModule.allert.error(error);
+    myModule.spinner.off(e.target);
     return;
   }
 
@@ -195,39 +83,39 @@ async function createPost(e) {
   tableBody.insertAdjacentHTML("beforeEnd", newPostRow);
 
   e.target.reset();
-  allert.success();
-  spinner.off(e.target);
+  myModule.allert.success();
+  myModule.spinner.off(e.target);
   createModal.hide();
 }
 
 async function deletePost(e) {
-  spinner.on(e.target);
-  const result = await allert.confirm("Удалить запись ? ");
+  myModule.spinner.on(e.target);
+  const result = await myModule.allert.confirm("Удалить запись ? ");
 
   if (result.dismiss) {
-    spinner.off(e.target);
+    myModule.spinner.off(e.target);
     return;
   }
 
   const postid = e.target.dataset.id;
 
-  const { error } = await post.delete(postid);
+  const { error } = await myModule.post.delete(postid);
   if (error) {
-    allert.error(error);
-    spinner.off(e.target);
+    myModule.allert.error(error);
+    myModule.spinner.off(e.target);
     return;
   }
 
   tableBody.querySelector(`[data-id="${postid}"]`).remove();
-  spinner.off(e.target);
-  allert.success();
+  myModule.spinner.off(e.target);
+  myModule.allert.success();
 }
 
 async function setUpdateForm(e) {
   const postId = e.target.dataset.id;
-  const { response, error } = await post.getById(postId);
+  const { response, error } = await myModule.post.getById(postId);
   if (error) {
-    allert.error(error);
+    myModule.allert.error(error);
     return;
   }
   updateForm.userId.value = response.userId;
@@ -239,16 +127,19 @@ async function setUpdateForm(e) {
 async function updatePost(e) {
   e.preventDefault();
   if (!chekValidation(e.target)) {
-    spinner.off(e.target);
+    myModule.spinner.off(e.target);
     return;
   }
-  spinner.on(e.target);
+  myModule.spinner.on(e.target);
   const payLoad = getFormData(e.target);
 
-  const { response, error } = await post.update(payLoad.updateId, payLoad);
+  const { response, error } = await myModule.post.update(
+    payLoad.updateId,
+    payLoad
+  );
   if (error) {
-    spinner.off(e.target);
-    allert.error(error);
+    myModule.spinner.off(e.target);
+    myModule.allert.error(error);
     return;
   }
   let newPostRow = createPostRow(
@@ -261,9 +152,14 @@ async function updatePost(e) {
     newPostRow;
 
   e.target.reset();
-  allert.success();
-  spinner.off(e.target);
+  myModule.allert.success();
+  myModule.spinner.off(e.target);
   updateModal.hide();
+}
+
+function sendToNextPage(e) {
+  const idButton = e.target.dataset.id;
+  window.location.href = "card-page.html" + "?" + "id" + "=" + idButton;
 }
 
 createForm.addEventListener("submit", createPost);
@@ -275,5 +171,8 @@ tableBody.addEventListener("click", function (e) {
   }
   if (e.target.className.includes("edit-button")) {
     setUpdateForm(e);
+  }
+  if (e.target.className.includes("user-photo-button")) {
+    sendToNextPage(e);
   }
 });
