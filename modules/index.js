@@ -5,14 +5,10 @@ const updateForm = document.getElementById("update-form");
 const createModal = new bootstrap.Modal("#createModal");
 const updateModal = new bootstrap.Modal("#updateModal");
 
-import { post } from "./modules/fetch-module.js";
-import { allert } from "./modules/allert-module.js";
-import { spinner } from "./modules/spinner-module.js";
-
-function getFormData(form) {
-  const formData = new FormData(form);
-  return Object.fromEntries(formData.entries());
-}
+import { post } from "../api/post.js";
+import { allert } from "../utils/allert.js";
+import { spinner } from "../utils/spinner.js";
+import { getFormData, chekValidation } from "../utils/form.js";
 
 function createPostRow(userId, id, title, body) {
   const postRow = `<tr data-id="${id}" >
@@ -29,8 +25,7 @@ function createPostRow(userId, id, title, body) {
                  </span>
     <i class="bi bi-trash"></i>
     Delete</button>
-    </td>
-    <td class="align-middle"><button onClick='location.href="card-page.html" + "?" + "id" + "=" + ${id}'  data-id="${id}" class="btn btn-outline-primary text-nowrap btn-sm user-photo-button "' ><i class="bi bi-person-bounding-box"></i> User Photo</a></button></td>
+    <td class="align-middle"><a href="pages/cards.html?id=${id}" class="btn btn-outline-primary text-nowrap btn-sm user-photo-button"><i class="bi bi-person-bounding-box"></i> User Photo</a></td>
     </tr>`;
 
   return postRow;
@@ -53,11 +48,6 @@ async function loadPosts() {
 }
 
 loadPosts();
-
-function chekValidation(form) {
-  form.classList.add("was-validated");
-  return form.checkValidity();
-}
 
 async function createPost(e) {
   e.preventDefault();
