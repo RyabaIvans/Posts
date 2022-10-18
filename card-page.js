@@ -1,6 +1,9 @@
-const cardPlace = document.getElementById("forCard");
+const cardPlace = document.getElementById("for-card");
+const spinnerTable = document.getElementById("spinner-table");
 
-import * as myModule from "./modules/fetch-module.js";
+import { post } from "./modules/fetch-module.js";
+import { allert } from "./modules/allert-module.js";
+import { spinner } from "./modules/spinner-module.js";
 
 function createPhotoCard(id, title, url) {
   const photoCard = `
@@ -18,18 +21,18 @@ function createPhotoCard(id, title, url) {
   return photoCard;
 }
 
-function getURLParameter(name) {
-  return decodeURIComponent(
-    (RegExp(name + "=" + "(.+?)(&|$)").exec(location.search) || [, null])[1] ||
-      ""
-  );
+function getURLParameter() {
+  let params = new URLSearchParams(document.location.search);
+  return params.get("id");
 }
 
 async function loadCardPhoto() {
-  const id = getURLParameter("id");
-  const { response, error } = await myModule.post.getPhotoCard(id);
+  spinner.on(spinnerTable);
+  const id = getURLParameter();
+  const { response, error } = await post.getPhotoCard(id);
   if (error) {
-    myModule.allert.error(error);
+    spinner.off(spinnerTable);
+    allert.error(error);
     return;
   }
 
@@ -37,5 +40,6 @@ async function loadCardPhoto() {
     return acc + createPhotoCard(post.id, post.title, post.url);
   }, "");
   cardPlace.innerHTML = myCardHolder;
+  spinner.off(spinnerTable);
 }
 loadCardPhoto();
