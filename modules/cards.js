@@ -1,9 +1,9 @@
-const cardPlace = document.getElementById("for-card");
-const spinnerTable = document.getElementById("spinner-table");
-
 import { post } from "../api/post.js";
 import { allert } from "../utils/allert.js";
 import { spinner } from "../utils/spinner.js";
+
+const cardPlace = document.getElementById("for-card");
+const spinnerTable = document.getElementById("spinner-table");
 
 function createPhotoCard(id, title, url) {
   const photoCard = `

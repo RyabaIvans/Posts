@@ -1,14 +1,14 @@
+import { post } from "../api/post.js";
+import { allert } from "../utils/allert.js";
+import { spinner } from "../utils/spinner.js";
+import { getFormData, chekValidation } from "../utils/form.js";
+
 const spinnerTable = document.getElementById("spinner-table");
 const tableBody = document.querySelector("tbody");
 const createForm = document.getElementById("create-form");
 const updateForm = document.getElementById("update-form");
 const createModal = new bootstrap.Modal("#createModal");
 const updateModal = new bootstrap.Modal("#updateModal");
-
-import { post } from "../api/post.js";
-import { allert } from "../utils/allert.js";
-import { spinner } from "../utils/spinner.js";
-import { getFormData, chekValidation } from "../utils/form.js";
 
 function createPostRow(userId, id, title, body) {
   const postRow = `<tr data-id="${id}" >
