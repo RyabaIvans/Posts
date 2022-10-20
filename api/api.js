@@ -58,6 +58,14 @@ function HttpClient(baseUrl) {
         })
       );
     },
+    searchUser: (path, body) => {
+      return fetchWrapper(
+        fetch(`${this.baseUrl}/${path}`, {
+          body: JSON.stringify(body),
+          headers: { "Content-type": "application/json; charset=UTF-8" },
+        })
+      );
+    },
   };
 }
 

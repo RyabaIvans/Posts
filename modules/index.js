@@ -9,6 +9,8 @@ const createForm = document.getElementById("create-form");
 const updateForm = document.getElementById("update-form");
 const createModal = new bootstrap.Modal("#createModal");
 const updateModal = new bootstrap.Modal("#updateModal");
+const searchInput = document.getElementById("search-input");
+const searchButton = document.getElementById("search-button");
 
 function createPostRow(userId, id, title, body) {
   const postRow = `<tr data-id="${id}" >
@@ -147,8 +149,39 @@ async function updatePost(e) {
   updateModal.hide();
 }
 
+async function searchUserId(e) {
+  e.preventDefault();
+  if (!chekValidation(searchForm)) {
+    spinner.off(e.target);
+    return;
+  }
+  spinner.on(e.target);
+  let id = searchInput.value;
+  localStorage.setItem("userId", id);
+  const { response, error } = await post.getSearchResult(id);
+  if (error) {
+    spinner.off(e.target);
+    allert.error(error);
+    return;
+  }
+  const postTableRows = response.reduce(function (acc, post) {
+    return acc + createPostRow(post.userId, post.id, post.title, post.body);
+  }, "");
+  tableBody.innerHTML = postTableRows;
+  spinner.off(e.target);
+}
+
+if (localStorage.getItem("userId") !== null) {
+  searchInput.value = `${localStorage.getItem("userId")}`;
+}
+
+if (searchInput.value === "") {
+  localStorage.removeItem("userId");
+}
+
 createForm.addEventListener("submit", createPost);
 updateForm.addEventListener("submit", updatePost);
+searchButton.addEventListener("click", searchUserId);
 
 tableBody.addEventListener("click", function (e) {
   if (e.target.className.includes("delete-button")) {

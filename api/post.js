@@ -19,6 +19,9 @@ const post = {
   getPhotoCard(id) {
     return api.getPhoto(`albums/${id}/photos`);
   },
+  getSearchResult(id) {
+    return api.searchUser(`posts?userId=${id}`);
+  },
 };
 
 export { post };
