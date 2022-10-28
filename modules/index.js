@@ -7,10 +7,20 @@ const spinnerTable = document.getElementById("spinner-table");
 const tableBody = document.querySelector("tbody");
 const createForm = document.getElementById("create-form");
 const updateForm = document.getElementById("update-form");
+const searchForm = document.getElementById("search-form");
+
 const createModal = new bootstrap.Modal("#createModal");
 const updateModal = new bootstrap.Modal("#updateModal");
-const searchInput = document.getElementById("search-input");
-const searchButton = document.getElementById("search-button");
+
+function verifySearch() {
+  searchForm.searchPole.value = localStorage.getItem("userId");
+  if (searchForm.searchPole.value < 1) {
+    searchForm.searchPole.value = "";
+    localStorage.clear;
+  }
+}
+
+verifySearch();
 
 function createPostRow(userId, id, title, body) {
   const postRow = `<tr data-id="${id}" >
@@ -33,8 +43,8 @@ function createPostRow(userId, id, title, body) {
   return postRow;
 }
 
-async function loadPosts() {
-  const { response, error } = await post.getAll();
+async function loadPosts(options) {
+  const { response, error } = await post.getAll(options);
   if (error) {
     allert.error(error);
     spinner.off(spinnerTable);
@@ -149,39 +159,25 @@ async function updatePost(e) {
   updateModal.hide();
 }
 
-async function searchUserId(e) {
+function seacrhByUserId(e) {
   e.preventDefault();
-  if (!chekValidation(searchForm)) {
-    spinner.off(e.target);
-    return;
-  }
+  const searchForm = getFormData(e.target);
+  const userId = searchForm.searchPole;
+  localStorage.setItem("userId", userId);
   spinner.on(e.target);
-  let id = searchInput.value;
-  localStorage.setItem("userId", id);
-  const { response, error } = await post.getSearchResult(id);
-  if (error) {
+  if (userId.length < 1) {
     spinner.off(e.target);
-    allert.error(error);
-    return;
+    loadPosts();
+  } else {
+    loadPosts({ userId });
+    allert.success();
+    spinner.off(e.target);
   }
-  const postTableRows = response.reduce(function (acc, post) {
-    return acc + createPostRow(post.userId, post.id, post.title, post.body);
-  }, "");
-  tableBody.innerHTML = postTableRows;
-  spinner.off(e.target);
-}
-
-if (localStorage.getItem("userId") !== null) {
-  searchInput.value = `${localStorage.getItem("userId")}`;
-}
-
-if (searchInput.value === "") {
-  localStorage.removeItem("userId");
 }
 
 createForm.addEventListener("submit", createPost);
 updateForm.addEventListener("submit", updatePost);
-searchButton.addEventListener("click", searchUserId);
+searchForm.addEventListener("submit", seacrhByUserId);
 
 tableBody.addEventListener("click", function (e) {
   if (e.target.className.includes("delete-button")) {

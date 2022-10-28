@@ -19,8 +19,12 @@ function HttpClient(baseUrl) {
   };
 
   return {
-    get: (path) => {
-      return fetchWrapper(fetch(`${this.baseUrl}/${path}`));
+    get: (path, options) => {
+      const searchString = new URLSearchParams(options).toString();
+      if (searchString.length < 1) {
+        return fetchWrapper(fetch(`${this.baseUrl}/${path}`));
+      }
+      return fetchWrapper(fetch(`${this.baseUrl}/${path}?${searchString}`));
     },
 
     post: (path, body) => {
@@ -51,14 +55,6 @@ function HttpClient(baseUrl) {
       );
     },
     getPhoto: (path, body) => {
-      return fetchWrapper(
-        fetch(`${this.baseUrl}/${path}`, {
-          body: JSON.stringify(body),
-          headers: { "Content-type": "application/json; charset=UTF-8" },
-        })
-      );
-    },
-    searchUser: (path, body) => {
       return fetchWrapper(
         fetch(`${this.baseUrl}/${path}`, {
           body: JSON.stringify(body),
