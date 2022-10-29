@@ -12,15 +12,17 @@ const searchForm = document.getElementById("search-form");
 const createModal = new bootstrap.Modal("#createModal");
 const updateModal = new bootstrap.Modal("#updateModal");
 
-function verifySearch() {
-  searchForm.searchPole.value = localStorage.getItem("userId");
-  if (searchForm.searchPole.value < 1) {
-    searchForm.searchPole.value = "";
-    localStorage.clear;
+function init() {
+  const userId = localStorage.getItem("userId");
+  if (Number(userId) > 0) {
+    searchForm.userId.value = userId;
+    loadPosts({ userId });
+    return;
   }
+  loadPosts();
 }
 
-verifySearch();
+init();
 
 function createPostRow(userId, id, title, body) {
   const postRow = `<tr data-id="${id}" >
@@ -58,8 +60,6 @@ async function loadPosts(options) {
   tableBody.innerHTML = postTableRows;
   spinner.off(spinnerTable);
 }
-
-loadPosts();
 
 async function createPost(e) {
   e.preventDefault();
@@ -161,18 +161,10 @@ async function updatePost(e) {
 
 function seacrhByUserId(e) {
   e.preventDefault();
-  const searchForm = getFormData(e.target);
-  const userId = searchForm.searchPole;
+  const { userId } = getFormData(e.target);
+  const filter = Number(userId) > 0 ? { userId } : {};
   localStorage.setItem("userId", userId);
-  spinner.on(e.target);
-  if (userId.length < 1) {
-    spinner.off(e.target);
-    loadPosts();
-  } else {
-    loadPosts({ userId });
-    allert.success();
-    spinner.off(e.target);
-  }
+  loadPosts(filter);
 }
 
 createForm.addEventListener("submit", createPost);

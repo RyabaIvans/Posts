@@ -21,10 +21,8 @@ function HttpClient(baseUrl) {
   return {
     get: (path, options) => {
       const searchString = new URLSearchParams(options).toString();
-      if (searchString.length < 1) {
-        return fetchWrapper(fetch(`${this.baseUrl}/${path}`));
-      }
-      return fetchWrapper(fetch(`${this.baseUrl}/${path}?${searchString}`));
+      const query = searchString ? `?${searchString}` : "";
+      return fetchWrapper(fetch(`${this.baseUrl}/${path}${query}`));
     },
 
     post: (path, body) => {
