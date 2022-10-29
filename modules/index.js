@@ -163,6 +163,7 @@ function seacrhByUserId(e) {
   e.preventDefault();
   const { userId } = getFormData(e.target);
   const filter = Number(userId) > 0 ? { userId } : {};
+  chekValidation(e.target);
   localStorage.setItem("userId", userId);
   loadPosts(filter);
 }
