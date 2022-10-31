@@ -161,7 +161,9 @@ async function updatePost(e) {
 
 function seacrhByUserId(e) {
   e.preventDefault();
-  chekValidation(e.target);
+  if (!chekValidation(e.target)) {
+    return;
+  }
   const { userId } = getFormData(e.target);
   const filter = Number(userId) > 0 ? { userId } : {};
 
