@@ -1,8 +1,8 @@
 import { api } from "../api/api.js";
 
 const post = {
-  getAll() {
-    return api.get(`posts`);
+  getAll(options) {
+    return api.get(`posts`, options);
   },
   getById(id) {
     return api.get(`posts/${id}`);

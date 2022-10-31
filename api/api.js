@@ -19,8 +19,10 @@ function HttpClient(baseUrl) {
   };
 
   return {
-    get: (path) => {
-      return fetchWrapper(fetch(`${this.baseUrl}/${path}`));
+    get: (path, options) => {
+      const searchString = new URLSearchParams(options).toString();
+      const query = searchString ? `?${searchString}` : "";
+      return fetchWrapper(fetch(`${this.baseUrl}/${path}${query}`));
     },
 
     post: (path, body) => {

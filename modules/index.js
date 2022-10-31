@@ -7,8 +7,22 @@ const spinnerTable = document.getElementById("spinner-table");
 const tableBody = document.querySelector("tbody");
 const createForm = document.getElementById("create-form");
 const updateForm = document.getElementById("update-form");
+const searchForm = document.getElementById("search-form");
+
 const createModal = new bootstrap.Modal("#createModal");
 const updateModal = new bootstrap.Modal("#updateModal");
+
+function init() {
+  const userId = localStorage.getItem("userId");
+  if (Number(userId) > 0) {
+    searchForm.userId.value = userId;
+    loadPosts({ userId });
+    return;
+  }
+  loadPosts();
+}
+
+init();
 
 function createPostRow(userId, id, title, body) {
   const postRow = `<tr data-id="${id}" >
@@ -31,8 +45,8 @@ function createPostRow(userId, id, title, body) {
   return postRow;
 }
 
-async function loadPosts() {
-  const { response, error } = await post.getAll();
+async function loadPosts(options) {
+  const { response, error } = await post.getAll(options);
   if (error) {
     allert.error(error);
     spinner.off(spinnerTable);
@@ -46,8 +60,6 @@ async function loadPosts() {
   tableBody.innerHTML = postTableRows;
   spinner.off(spinnerTable);
 }
-
-loadPosts();
 
 async function createPost(e) {
   e.preventDefault();
@@ -147,8 +159,21 @@ async function updatePost(e) {
   updateModal.hide();
 }
 
+function seacrhByUserId(e) {
+  e.preventDefault();
+  if (!chekValidation(e.target)) {
+    return;
+  }
+  const { userId } = getFormData(e.target);
+  const filter = Number(userId) > 0 ? { userId } : {};
+
+  localStorage.setItem("userId", userId);
+  loadPosts(filter);
+}
+
 createForm.addEventListener("submit", createPost);
 updateForm.addEventListener("submit", updatePost);
+searchForm.addEventListener("submit", seacrhByUserId);
 
 tableBody.addEventListener("click", function (e) {
   if (e.target.className.includes("delete-button")) {
