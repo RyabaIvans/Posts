@@ -1,3 +1,4 @@
+import { Modal } from "bootstrap";
 import { post } from "../api/post.js";
 import { allert } from "../utils/allert.js";
 import { spinner } from "../utils/spinner.js";
@@ -9,8 +10,8 @@ const createForm = document.getElementById("create-form");
 const updateForm = document.getElementById("update-form");
 const searchForm = document.getElementById("search-form");
 
-const createModal = new bootstrap.Modal("#createModal");
-const updateModal = new bootstrap.Modal("#updateModal");
+const createModal = new Modal("#createModal");
+const updateModal = new Modal("#updateModal");
 
 function init() {
   const userId = localStorage.getItem("userId");

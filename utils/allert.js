@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 const allert = {
   error(error) {
     return Swal.fire({
