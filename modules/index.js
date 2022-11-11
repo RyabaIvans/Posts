@@ -1,4 +1,3 @@
-import "../style.scss";
 import { Modal } from "bootstrap";
 import { post } from "../api/post.js";
 import { allert } from "../utils/allert.js";

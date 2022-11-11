@@ -11,7 +11,7 @@ body {
   }
 }
 
-.sass_btn {
+.p-btn {
   background-color: $bluecolor;
   color: white;
   border: 0;
@@ -22,35 +22,15 @@ body {
   white-space: nowrap;
   transition: all 0.4s;
   user-select: none;
-  font: 18px/18px "Trebuchet MS";
+  font-size: 18px;
+  font-weight: 18px;
+  font-family: "Trebuchet MS";
   padding: 13px 25px 10px;
 
   &--small {
-    background-color: $bluecolor;
-    color: white;
-    border: 0;
-    border-radius: 3px;
-    cursor: pointer;
-    display: inline-block;
-    letter-spacing: 1px;
-    white-space: nowrap;
-    transition: all 0.4s;
-    user-select: none;
-    font: 12px/12px "Trebuchet MS";
     padding: 8px 12px 5px;
   }
   &--large {
-    background-color: $bluecolor;
-    color: white;
-    border: 0;
-    border-radius: 3px;
-    cursor: pointer;
-    display: inline-block;
-    letter-spacing: 1px;
-    white-space: nowrap;
-    transition: all 0.4s;
-    user-select: none;
-    font: 24px/24px "Trebuchet MS";
     padding: 20px 40px 35px;
   }
 }
