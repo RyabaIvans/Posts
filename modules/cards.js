@@ -1,3 +1,4 @@
+import "../style.scss";
 import { post } from "../api/post.js";
 import { allert } from "../utils/allert.js";
 import { spinner } from "../utils/spinner.js";
